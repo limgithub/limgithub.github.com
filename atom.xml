@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Fighting for my own story.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-12-29T19:18:17.764Z</updated>
+  <updated>2016-05-30T00:48:39.387Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -19,13 +19,35 @@
     <link href="http://yoursite.com/2015/10/21/demo/"/>
     <id>http://yoursite.com/2015/10/21/demo/</id>
     <published>2015-10-21T17:34:12.000Z</published>
-    <updated>2015-12-29T19:18:17.764Z</updated>
-    <content type="html"><![CDATA[<p>sdk<br>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
-<p>自从可以使用 Map 之后，开发者们开始毫无顾忌地定义 Map 存储数据，比如断点宽度、颜色值、栅格布局等等响应式排版的细节，都被一股脑的塞进了 Map 中。</p>
-<p>那么，有了 Map 之后，我们还有必要使用 List 吗？可能某些人会觉得为了保持向后兼容应该继续使用多重列表模拟 Map，因为可能有些开发者仍然在使用老版本的 Sass 编译器，但实际上，这是多此一举了，Sass 的版本通常由 <code>package.json</code> 或者其他同类型的项目配置文件所控制，往往只需一条命令（<code>gem update sass</code>）即可更新 Sass 的版本，因此基本上无需考虑对老版本的兼容问题。</p>
+    <updated>2016-05-30T00:48:39.387Z</updated>
+    <content type="html"><![CDATA[<!-- toc -->
+<ul>
+<li><a href="#&#x6D4B;&#x8BD5;&#x8868;&#x683C;">&#x6D4B;&#x8BD5;&#x8868;&#x683C;</a></li>
+<li><a href="#&#x8BED;&#x6CD5;&#x6BD4;&#x8F83;">&#x8BED;&#x6CD5;&#x6BD4;&#x8F83;</a><ul>
+<li><a href="#map-&#x8BED;&#x6CD5;">Map &#x8BED;&#x6CD5;</a></li>
+<li><a href="#&#x591A;&#x91CD;&#x5217;&#x8868;&#x8BED;&#x6CD5;">&#x591A;&#x91CD;&#x5217;&#x8868;&#x8BED;&#x6CD5;</a></li>
+</ul>
+</li>
+<li><a href="#&#x904D;&#x5386;&#x6BD4;&#x8F83;">&#x904D;&#x5386;&#x6BD4;&#x8F83;</a><ul>
+<li><a href="#&#x904D;&#x5386;-map">&#x904D;&#x5386; Map</a></li>
+<li><a href="#&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;">&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;</a></li>
+</ul>
+</li>
+<li><a href="#&#x614E;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;">&#x614E;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;</a><ul>
+<li><a href="#&#x9057;&#x6F0F;&#x952E;&#x503C;">&#x9057;&#x6F0F;&#x952E;&#x503C;</a></li>
+<li><a href="#&#x67E5;&#x627E;&#x7279;&#x5B9A;&#x5217;&#x8868;">&#x67E5;&#x627E;&#x7279;&#x5B9A;&#x5217;&#x8868;</a></li>
+<li><a href="#&#x7F3A;&#x5C11;&#x539F;&#x751F;&#x7684;-map-&#x51FD;&#x6570;">&#x7F3A;&#x5C11;&#x539F;&#x751F;&#x7684; Map &#x51FD;&#x6570;</a></li>
+</ul>
+</li>
+<li><a href="#&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</a></li>
+</ul>
+<!-- tocstop -->
+<p>sdk<br>&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;&#x8FC7; Sass 3.3 &#x4E4B;&#x524D;&#x7684;&#x7248;&#x672C;&#xFF0C;&#x90A3;&#x4E48;&#x4F60;&#x4E00;&#x5B9A;&#x5BF9;&#x90A3;&#x6BB5;&#x65F6;&#x5149;&#x9887;&#x6709;&#x611F;&#x89E6;&#xFF0C;&#x90A3;&#x65F6;&#x5019;&#x6CA1;&#x6709;&#x73B0;&#x5982;&#x4ECA;&#x8FD9;&#x4E48;&#x597D;&#x7684;&#x6761;&#x4EF6;&#xFF0C;&#x90A3;&#x65F6;&#x5019;&#x7684; Map &#x8FD8;&#x53EA;&#x80FD;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;&#xFF08;lists of list&#xFF09;&#x6765;&#x6A21;&#x62DF;&#x3002;&#x591A;&#x91CD;&#x5217;&#x8868;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;&#x590D;&#x6742;&#x6570;&#x636E;&#x7684;&#x5D4C;&#x5957;&#x5B9A;&#x4E49;&#xFF0C;&#x4F46;&#x5374;&#x4E0D;&#x662F;&#x4EE5;&#x952E;&#x503C;&#x5BF9;&#x7684;&#x5F62;&#x5F0F;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x6240;&#x6709;&#x5F53;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x83B7;&#x53D6;&#x5176;&#x4E2D;&#x7279;&#x5B9A;&#x7684;&#x67D0;&#x4E00;&#x9879;&#x65F6;&#x5C31;&#x4F1A;&#x6BD4;&#x8F83;&#x9EBB;&#x70E6;&#x3002;Map &#x8FD9;&#x79CD;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x5929;&#x751F;&#x5C31;&#x662F;&#x57FA;&#x4E8E;&#x952E;&#x503C;&#x5BF9;&#x7684;&#x5F62;&#x5F0F;&#xFF0C;&#x975E;&#x5E38;&#x4FBF;&#x4E8E;&#x7EC4;&#x7EC7;&#x6570;&#x636E;&#x3002;</p>
+<p>&#x81EA;&#x4ECE;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; Map &#x4E4B;&#x540E;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x4EEC;&#x5F00;&#x59CB;&#x6BEB;&#x65E0;&#x987E;&#x5FCC;&#x5730;&#x5B9A;&#x4E49; Map &#x5B58;&#x50A8;&#x6570;&#x636E;&#xFF0C;&#x6BD4;&#x5982;&#x65AD;&#x70B9;&#x5BBD;&#x5EA6;&#x3001;&#x989C;&#x8272;&#x503C;&#x3001;&#x6805;&#x683C;&#x5E03;&#x5C40;&#x7B49;&#x7B49;&#x54CD;&#x5E94;&#x5F0F;&#x6392;&#x7248;&#x7684;&#x7EC6;&#x8282;&#xFF0C;&#x90FD;&#x88AB;&#x4E00;&#x80A1;&#x8111;&#x7684;&#x585E;&#x8FDB;&#x4E86; Map &#x4E2D;&#x3002;</p>
+<p>&#x90A3;&#x4E48;&#xFF0C;&#x6709;&#x4E86; Map &#x4E4B;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x8FD8;&#x6709;&#x5FC5;&#x8981;&#x4F7F;&#x7528; List &#x5417;&#xFF1F;&#x53EF;&#x80FD;&#x67D0;&#x4E9B;&#x4EBA;&#x4F1A;&#x89C9;&#x5F97;&#x4E3A;&#x4E86;&#x4FDD;&#x6301;&#x5411;&#x540E;&#x517C;&#x5BB9;&#x5E94;&#x8BE5;&#x7EE7;&#x7EED;&#x4F7F;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;&#x6A21;&#x62DF; Map&#xFF0C;&#x56E0;&#x4E3A;&#x53EF;&#x80FD;&#x6709;&#x4E9B;&#x5F00;&#x53D1;&#x8005;&#x4ECD;&#x7136;&#x5728;&#x4F7F;&#x7528;&#x8001;&#x7248;&#x672C;&#x7684; Sass &#x7F16;&#x8BD1;&#x5668;&#xFF0C;&#x4F46;&#x5B9E;&#x9645;&#x4E0A;&#xFF0C;&#x8FD9;&#x662F;&#x591A;&#x6B64;&#x4E00;&#x4E3E;&#x4E86;&#xFF0C;Sass &#x7684;&#x7248;&#x672C;&#x901A;&#x5E38;&#x7531; <code>package.json</code> &#x6216;&#x8005;&#x5176;&#x4ED6;&#x540C;&#x7C7B;&#x578B;&#x7684;&#x9879;&#x76EE;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x6240;&#x63A7;&#x5236;&#xFF0C;&#x5F80;&#x5F80;&#x53EA;&#x9700;&#x4E00;&#x6761;&#x547D;&#x4EE4;&#xFF08;<code>gem update sass</code>&#xFF09;&#x5373;&#x53EF;&#x66F4;&#x65B0; Sass &#x7684;&#x7248;&#x672C;&#xFF0C;&#x56E0;&#x6B64;&#x57FA;&#x672C;&#x4E0A;&#x65E0;&#x9700;&#x8003;&#x8651;&#x5BF9;&#x8001;&#x7248;&#x672C;&#x7684;&#x517C;&#x5BB9;&#x95EE;&#x9898;&#x3002;</p>
 <a id="more"></a>
-<p>使用多重列表替代 Map 的优势之一就是减少代码量。下面让我们来比较一下多种列表和 Map 的语法结构以及遍历方式。</p>
-<h2 id="测试表格">测试表格</h2><table>
+<p>&#x4F7F;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;&#x66FF;&#x4EE3; Map &#x7684;&#x4F18;&#x52BF;&#x4E4B;&#x4E00;&#x5C31;&#x662F;&#x51CF;&#x5C11;&#x4EE3;&#x7801;&#x91CF;&#x3002;&#x4E0B;&#x9762;&#x8BA9;&#x6211;&#x4EEC;&#x6765;&#x6BD4;&#x8F83;&#x4E00;&#x4E0B;&#x591A;&#x79CD;&#x5217;&#x8868;&#x548C; Map &#x7684;&#x8BED;&#x6CD5;&#x7ED3;&#x6784;&#x4EE5;&#x53CA;&#x904D;&#x5386;&#x65B9;&#x5F0F;&#x3002;</p>
+<h2 id="&#x6D4B;&#x8BD5;&#x8868;&#x683C;">&#x6D4B;&#x8BD5;&#x8868;&#x683C;</h2><table>
 <thead>
 <tr>
 <th>Variable</th>
@@ -67,41 +89,126 @@
 </tr>
 </tbody>
 </table>
-<h2 id="语法比较">语法比较</h2><div class="note"><br>    <h5>测试标题</h5><br>    <p>在下面的示例中，我创建了一个用于控制响应式布局的数据，该数据一共有四个断点，每一个断点都包含了 <code>min-width</code>、<code>max-width</code>、<code>font-size</code> 和 <code>line-height</code> 四个样式。</p><br></div>
+<h2 id="&#x8BED;&#x6CD5;&#x6BD4;&#x8F83;">&#x8BED;&#x6CD5;&#x6BD4;&#x8F83;</h2><div class="note"><br>    <h5 id="&#x6D4B;&#x8BD5;&#x6807;&#x9898;">&#x6D4B;&#x8BD5;&#x6807;&#x9898;</h5><br>    <p>&#x5728;&#x4E0B;&#x9762;&#x7684;&#x793A;&#x4F8B;&#x4E2D;&#xFF0C;&#x6211;&#x521B;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x63A7;&#x5236;&#x54CD;&#x5E94;&#x5F0F;&#x5E03;&#x5C40;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x8BE5;&#x6570;&#x636E;&#x4E00;&#x5171;&#x6709;&#x56DB;&#x4E2A;&#x65AD;&#x70B9;&#xFF0C;&#x6BCF;&#x4E00;&#x4E2A;&#x65AD;&#x70B9;&#x90FD;&#x5305;&#x542B;&#x4E86; <code>min-width</code>&#x3001;<code>max-width</code>&#x3001;<code>font-size</code> &#x548C; <code>line-height</code> &#x56DB;&#x4E2A;&#x6837;&#x5F0F;&#x3002;</p><br></div>
 
-<h4 id="Map_语法">Map 语法</h4><p>下面就是使用 Map 存储的数据，具体来说，该 Map 中首先存储了四个用于标识断点的 Key，相对应的是保存具体属性值得 Value。虽然这种形式可读性更高，但是总体代码量却高达 26 行 450 个字符。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-map: (&#10;&#160; &#160; small: (&#10;&#160; &#160; &#160; &#160; min-width: null,&#10;&#160; &#160; &#160; &#160; max-width: 479px,&#10;&#160; &#160; &#160; &#160; base-font: 16px,&#10;&#160; &#160; &#160; &#160; vertical-rhythm: 1.3&#10;&#160; &#160; ),&#10;&#160; &#160; medium: (&#10;&#160; &#160; &#160; &#160; min-width: 480px,&#10;&#160; &#160; &#160; &#160; max-width: 959px,&#10;&#160; &#160; &#160; &#160; base-font: 18px,&#10;&#160; &#160; &#160; &#160; vertical-rhythm: 1.414&#10;&#160; &#160; ),&#10;&#160; &#160; large: (&#10;&#160; &#160; &#160; &#160; min-width: 960px,&#10;&#160; &#160; &#160; &#160; max-width: 1099px,&#10;&#160; &#160; &#160; &#160; base-font: 18px,&#10;&#160; &#160; &#160; &#160; vertical-rhythm: 1.5&#10;&#160; &#160; ),&#10;&#160; &#160; xlarge: (&#10;&#160; &#160; &#160; &#160; min-width: 1100px,&#10;&#160; &#160; &#160; &#160; max-width: null,&#10;&#160; &#160; &#160; &#160; base-font: 21px,&#10;&#160; &#160; &#160; &#160; vertical-rhythm: 1.618&#10;&#160; &#160; )&#10;);</span><br></pre></td></tr></table></figure>
-<h4 id="多重列表语法">多重列表语法</h4><p>下面的多重列表存储了和上面 Map 同样的数据，在多重列表中没有 Key-Value 的对应关系，这意味着要想找到特定的值，必须使用遍历或 <code>nth()</code> 的方式来实现了。从另一个角度来看，多种列表又比 Map 的代码量小得多，总共只有六行 180 个字符。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-list: (&#10;&#160; &#160; (small, null, 479px, 16px, 1.3),&#10;&#160; &#160; (medium, 480px, 959px, 18px, 1.414),&#10;&#160; &#160; (large, 960px, 1099px, 18px, 1.5),&#10;&#160; &#160; (xlarge, 1100px, null, 21px, 1.618)&#10;);</span><br></pre></td></tr></table></figure>
-<h2 id="遍历比较">遍历比较</h2><div class="note info"><br>    <h5>测试标题</h5><br>    <p>从上面简单地比较中可以粗略的看出，多种列表的代码量明显少于 Map。但是，如果我们需要遍历这些值得话，复杂度又是怎样的呢？</p><br></div>
+<h4 id="map-&#x8BED;&#x6CD5;">Map &#x8BED;&#x6CD5;</h4><p>&#x4E0B;&#x9762;&#x5C31;&#x662F;&#x4F7F;&#x7528; Map &#x5B58;&#x50A8;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5177;&#x4F53;&#x6765;&#x8BF4;&#xFF0C;&#x8BE5; Map &#x4E2D;&#x9996;&#x5148;&#x5B58;&#x50A8;&#x4E86;&#x56DB;&#x4E2A;&#x7528;&#x4E8E;&#x6807;&#x8BC6;&#x65AD;&#x70B9;&#x7684; Key&#xFF0C;&#x76F8;&#x5BF9;&#x5E94;&#x7684;&#x662F;&#x4FDD;&#x5B58;&#x5177;&#x4F53;&#x5C5E;&#x6027;&#x503C;&#x5F97; Value&#x3002;&#x867D;&#x7136;&#x8FD9;&#x79CD;&#x5F62;&#x5F0F;&#x53EF;&#x8BFB;&#x6027;&#x66F4;&#x9AD8;&#xFF0C;&#x4F46;&#x662F;&#x603B;&#x4F53;&#x4EE3;&#x7801;&#x91CF;&#x5374;&#x9AD8;&#x8FBE; 26 &#x884C; 450 &#x4E2A;&#x5B57;&#x7B26;&#x3002;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-map: (
+&#xA0; &#xA0; small: (
+&#xA0; &#xA0; &#xA0; &#xA0; min-width: null,
+&#xA0; &#xA0; &#xA0; &#xA0; max-width: 479px,
+&#xA0; &#xA0; &#xA0; &#xA0; base-font: 16px,
+&#xA0; &#xA0; &#xA0; &#xA0; vertical-rhythm: 1.3
+&#xA0; &#xA0; ),
+&#xA0; &#xA0; medium: (
+&#xA0; &#xA0; &#xA0; &#xA0; min-width: 480px,
+&#xA0; &#xA0; &#xA0; &#xA0; max-width: 959px,
+&#xA0; &#xA0; &#xA0; &#xA0; base-font: 18px,
+&#xA0; &#xA0; &#xA0; &#xA0; vertical-rhythm: 1.414
+&#xA0; &#xA0; ),
+&#xA0; &#xA0; large: (
+&#xA0; &#xA0; &#xA0; &#xA0; min-width: 960px,
+&#xA0; &#xA0; &#xA0; &#xA0; max-width: 1099px,
+&#xA0; &#xA0; &#xA0; &#xA0; base-font: 18px,
+&#xA0; &#xA0; &#xA0; &#xA0; vertical-rhythm: 1.5
+&#xA0; &#xA0; ),
+&#xA0; &#xA0; xlarge: (
+&#xA0; &#xA0; &#xA0; &#xA0; min-width: 1100px,
+&#xA0; &#xA0; &#xA0; &#xA0; max-width: null,
+&#xA0; &#xA0; &#xA0; &#xA0; base-font: 21px,
+&#xA0; &#xA0; &#xA0; &#xA0; vertical-rhythm: 1.618
+&#xA0; &#xA0; )
+);</span><br></pre></td></tr></table></figure>
+<h4 id="&#x591A;&#x91CD;&#x5217;&#x8868;&#x8BED;&#x6CD5;">&#x591A;&#x91CD;&#x5217;&#x8868;&#x8BED;&#x6CD5;</h4><p>&#x4E0B;&#x9762;&#x7684;&#x591A;&#x91CD;&#x5217;&#x8868;&#x5B58;&#x50A8;&#x4E86;&#x548C;&#x4E0A;&#x9762; Map &#x540C;&#x6837;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5728;&#x591A;&#x91CD;&#x5217;&#x8868;&#x4E2D;&#x6CA1;&#x6709; Key-Value &#x7684;&#x5BF9;&#x5E94;&#x5173;&#x7CFB;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x8981;&#x60F3;&#x627E;&#x5230;&#x7279;&#x5B9A;&#x7684;&#x503C;&#xFF0C;&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x904D;&#x5386;&#x6216; <code>nth()</code> &#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5B9E;&#x73B0;&#x4E86;&#x3002;&#x4ECE;&#x53E6;&#x4E00;&#x4E2A;&#x89D2;&#x5EA6;&#x6765;&#x770B;&#xFF0C;&#x591A;&#x79CD;&#x5217;&#x8868;&#x53C8;&#x6BD4; Map &#x7684;&#x4EE3;&#x7801;&#x91CF;&#x5C0F;&#x5F97;&#x591A;&#xFF0C;&#x603B;&#x5171;&#x53EA;&#x6709;&#x516D;&#x884C; 180 &#x4E2A;&#x5B57;&#x7B26;&#x3002;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-list: (
+&#xA0; &#xA0; (small, null, 479px, 16px, 1.3),
+&#xA0; &#xA0; (medium, 480px, 959px, 18px, 1.414),
+&#xA0; &#xA0; (large, 960px, 1099px, 18px, 1.5),
+&#xA0; &#xA0; (xlarge, 1100px, null, 21px, 1.618)
+);</span><br></pre></td></tr></table></figure>
+<h2 id="&#x904D;&#x5386;&#x6BD4;&#x8F83;">&#x904D;&#x5386;&#x6BD4;&#x8F83;</h2><div class="note info"><br>    <h5 id="&#x6D4B;&#x8BD5;&#x6807;&#x9898;">&#x6D4B;&#x8BD5;&#x6807;&#x9898;</h5><br>    <p>&#x4ECE;&#x4E0A;&#x9762;&#x7B80;&#x5355;&#x5730;&#x6BD4;&#x8F83;&#x4E2D;&#x53EF;&#x4EE5;&#x7C97;&#x7565;&#x7684;&#x770B;&#x51FA;&#xFF0C;&#x591A;&#x79CD;&#x5217;&#x8868;&#x7684;&#x4EE3;&#x7801;&#x91CF;&#x660E;&#x663E;&#x5C11;&#x4E8E; Map&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x904D;&#x5386;&#x8FD9;&#x4E9B;&#x503C;&#x5F97;&#x8BDD;&#xFF0C;&#x590D;&#x6742;&#x5EA6;&#x53C8;&#x662F;&#x600E;&#x6837;&#x7684;&#x5462;&#xFF1F;</p><br></div>
 
-<h4 id="遍历_Map">遍历 Map</h4><p>我们可以使用如下的代码遍历 Map：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $map in $breakpoint-map &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的变量 <code>$label</code> 和 <code>$map</code> 会随着对 <code>$breakpoint-map</code> 的遍历被动态地赋值，<code>$label</code> 将会被赋值为 <code>$breakpoint-map</code> 的 Key，而 <code>$map</code> 会被赋值为 <code>$breakpoint-map</code> 的 Value。为了在遍历过程中获取特定值，我们就需要使用 Sass 原生的 <code>map-get()</code> 函数，使用该函数需要传入两个参数：Map 的名字和求取的 Key，最后返回该 Map 中匹配该 Key 的 Value。</p>
-<p>具体的做法就是使用 <code>@each</code> 遍历 Map，然后使用 <code>map-get()</code> 获取特定值，最终只需要六行代码 220 个字符即可完成整个遍历：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $map in $breakpoint-map &#123;&#10;&#160; &#160; $min-width: map-get($map, min-width);&#10;&#160; &#160; $max-width: map-get($map, max-width);&#10;&#160; &#160; $base-font: map-get($map, base-font);&#10;&#160; &#160; $vertical-rhythm: map-get($map, vertical-rhythm);&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="遍历多重列表">遍历多重列表</h4><p>遍历多重列表不必像遍历 Map 一样动态获取到 Map 后再使用 <code>map-get()</code> 函数取特定值，直接遍历一遍即可获得特定值。</p>
-<p>因为多种列表内层的每一个列表结构相同，都有按照相同顺序排列的五个值，所以我们可以持续遍历每个值并赋值给特定的变量。无需调用 <code>map-get()</code>，直接引用这些变量即可进行赋值等裸机操作。最终遍历多重列表只使用了两行代码 100 个字符：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $min-width, $max-width, $base-font, $vertical-rhythm in $breakpoint-list &#123;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="慎用多重列表">慎用多重列表</h2><div class="note warning"><br>    <h5>测试标题</h5><br>    <p>经过上述的比对，看起来多重列表各方面都在碾压 Map，实则不然，Sass 中添加 Map 有一条非常重要的原因就是：Key-Value 的映射关系。</p><br></div>
+<h4 id="&#x904D;&#x5386;-map">&#x904D;&#x5386; Map</h4><p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5982;&#x4E0B;&#x7684;&#x4EE3;&#x7801;&#x904D;&#x5386; Map&#xFF1A;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $map in $breakpoint-map {}</span><br></pre></td></tr></table></figure>
+<p>&#x8FD9;&#x91CC;&#x7684;&#x53D8;&#x91CF; <code>$label</code> &#x548C; <code>$map</code> &#x4F1A;&#x968F;&#x7740;&#x5BF9; <code>$breakpoint-map</code> &#x7684;&#x904D;&#x5386;&#x88AB;&#x52A8;&#x6001;&#x5730;&#x8D4B;&#x503C;&#xFF0C;<code>$label</code> &#x5C06;&#x4F1A;&#x88AB;&#x8D4B;&#x503C;&#x4E3A; <code>$breakpoint-map</code> &#x7684; Key&#xFF0C;&#x800C; <code>$map</code> &#x4F1A;&#x88AB;&#x8D4B;&#x503C;&#x4E3A; <code>$breakpoint-map</code> &#x7684; Value&#x3002;&#x4E3A;&#x4E86;&#x5728;&#x904D;&#x5386;&#x8FC7;&#x7A0B;&#x4E2D;&#x83B7;&#x53D6;&#x7279;&#x5B9A;&#x503C;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x9700;&#x8981;&#x4F7F;&#x7528; Sass &#x539F;&#x751F;&#x7684; <code>map-get()</code> &#x51FD;&#x6570;&#xFF0C;&#x4F7F;&#x7528;&#x8BE5;&#x51FD;&#x6570;&#x9700;&#x8981;&#x4F20;&#x5165;&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#xFF1A;Map &#x7684;&#x540D;&#x5B57;&#x548C;&#x6C42;&#x53D6;&#x7684; Key&#xFF0C;&#x6700;&#x540E;&#x8FD4;&#x56DE;&#x8BE5; Map &#x4E2D;&#x5339;&#x914D;&#x8BE5; Key &#x7684; Value&#x3002;</p>
+<p>&#x5177;&#x4F53;&#x7684;&#x505A;&#x6CD5;&#x5C31;&#x662F;&#x4F7F;&#x7528; <code>@each</code> &#x904D;&#x5386; Map&#xFF0C;&#x7136;&#x540E;&#x4F7F;&#x7528; <code>map-get()</code> &#x83B7;&#x53D6;&#x7279;&#x5B9A;&#x503C;&#xFF0C;&#x6700;&#x7EC8;&#x53EA;&#x9700;&#x8981;&#x516D;&#x884C;&#x4EE3;&#x7801; 220 &#x4E2A;&#x5B57;&#x7B26;&#x5373;&#x53EF;&#x5B8C;&#x6210;&#x6574;&#x4E2A;&#x904D;&#x5386;&#xFF1A;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $map in $breakpoint-map {
+&#xA0; &#xA0; $min-width: map-get($map, min-width);
+&#xA0; &#xA0; $max-width: map-get($map, max-width);
+&#xA0; &#xA0; $base-font: map-get($map, base-font);
+&#xA0; &#xA0; $vertical-rhythm: map-get($map, vertical-rhythm);
+}</span><br></pre></td></tr></table></figure>
+<h4 id="&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;">&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;</h4><p>&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;&#x4E0D;&#x5FC5;&#x50CF;&#x904D;&#x5386; Map &#x4E00;&#x6837;&#x52A8;&#x6001;&#x83B7;&#x53D6;&#x5230; Map &#x540E;&#x518D;&#x4F7F;&#x7528; <code>map-get()</code> &#x51FD;&#x6570;&#x53D6;&#x7279;&#x5B9A;&#x503C;&#xFF0C;&#x76F4;&#x63A5;&#x904D;&#x5386;&#x4E00;&#x904D;&#x5373;&#x53EF;&#x83B7;&#x5F97;&#x7279;&#x5B9A;&#x503C;&#x3002;</p>
+<p>&#x56E0;&#x4E3A;&#x591A;&#x79CD;&#x5217;&#x8868;&#x5185;&#x5C42;&#x7684;&#x6BCF;&#x4E00;&#x4E2A;&#x5217;&#x8868;&#x7ED3;&#x6784;&#x76F8;&#x540C;&#xFF0C;&#x90FD;&#x6709;&#x6309;&#x7167;&#x76F8;&#x540C;&#x987A;&#x5E8F;&#x6392;&#x5217;&#x7684;&#x4E94;&#x4E2A;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x6301;&#x7EED;&#x904D;&#x5386;&#x6BCF;&#x4E2A;&#x503C;&#x5E76;&#x8D4B;&#x503C;&#x7ED9;&#x7279;&#x5B9A;&#x7684;&#x53D8;&#x91CF;&#x3002;&#x65E0;&#x9700;&#x8C03;&#x7528; <code>map-get()</code>&#xFF0C;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x8FD9;&#x4E9B;&#x53D8;&#x91CF;&#x5373;&#x53EF;&#x8FDB;&#x884C;&#x8D4B;&#x503C;&#x7B49;&#x88F8;&#x673A;&#x64CD;&#x4F5C;&#x3002;&#x6700;&#x7EC8;&#x904D;&#x5386;&#x591A;&#x91CD;&#x5217;&#x8868;&#x53EA;&#x4F7F;&#x7528;&#x4E86;&#x4E24;&#x884C;&#x4EE3;&#x7801; 100 &#x4E2A;&#x5B57;&#x7B26;&#xFF1A;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@each $label, $min-width, $max-width, $base-font, $vertical-rhythm in $breakpoint-list {
+}</span><br></pre></td></tr></table></figure>
+<h2 id="&#x614E;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;">&#x614E;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;</h2><div class="note warning"><br>    <h5 id="&#x6D4B;&#x8BD5;&#x6807;&#x9898;">&#x6D4B;&#x8BD5;&#x6807;&#x9898;</h5><br>    <p>&#x7ECF;&#x8FC7;&#x4E0A;&#x8FF0;&#x7684;&#x6BD4;&#x5BF9;&#xFF0C;&#x770B;&#x8D77;&#x6765;&#x591A;&#x91CD;&#x5217;&#x8868;&#x5404;&#x65B9;&#x9762;&#x90FD;&#x5728;&#x78BE;&#x538B; Map&#xFF0C;&#x5B9E;&#x5219;&#x4E0D;&#x7136;&#xFF0C;Sass &#x4E2D;&#x6DFB;&#x52A0; Map &#x6709;&#x4E00;&#x6761;&#x975E;&#x5E38;&#x91CD;&#x8981;&#x7684;&#x539F;&#x56E0;&#x5C31;&#x662F;&#xFF1A;Key-Value &#x7684;&#x6620;&#x5C04;&#x5173;&#x7CFB;&#x3002;</p><br></div>
 
-<h4 id="遗漏键值">遗漏键值</h4><p>如果要使用多重列表，那么就必须保证自己非常熟悉多重列表内部的每一项所代表的意义。下面我们举个例子，来看看遗漏了某些值的情况：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-list: (&#10;&#160; &#160; (small, null, 479px, 16px, 1.3),&#10;&#160; &#160; (medium, 480px, 959px, 18px, 1.414),&#10;&#160; &#160; (large, 960px, 1099px, 18px, 1.5),&#10;&#160; &#160; (xlarge, 1100px, 21px, 1.618)&#10;);&#10;&#10;p &#123;&#10;&#160; &#160; @each $label, $min-width, $max-width, $base-font, $vertical-rhythm in $breakpoint-list &#123;&#10;&#160; &#160; &#160; &#160; @if $min-width &#123;&#10;&#160; &#160; &#160; &#160; &#160; &#160; @include breakpoint( $min-width ) &#123;&#10;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; font-size: $base-font;&#10;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; line-height: $vertical-rhythm;&#10;&#160; &#160; &#160; &#160; &#160; &#160; &#125;&#10;&#160; &#160; &#160; &#160; &#125; @else &#123;&#10;&#160; &#160; &#160; &#160; &#160; &#160; font-size: $base-font;&#10;&#160; &#160; &#160; &#160; &#160; &#160; line-height: $vertical-rhythm;&#10;&#160; &#160; &#160; &#160; &#125;&#10;&#160; &#160; &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>当我们尝试运行这段代码时，结果肯定是错误地，因为在 <code>$breakpoint-list</code> 的最后一行，<code>xlarge</code> 被赋值给了 <code>$label</code>，<code>1100px</code> 被赋值给了 <code>$min-width</code>，<code>21px</code> 被赋值给了 <code>$max-width</code>, <code>1.618</code> 被赋值给了 <code>$base-font</code>，最终导致 <code>$vertical-rhythm</code> 没有被赋值，结果就是 <code>font-size</code> 的属性值是错的，<code>line-height</code> 的属性值是空的。此外，Sass 还不会对此抛出错误，导致我们无从知晓错误所在。</p>
-<p>如果我们使用 Map 来代替这里的多重列表，那么使用 <code>map-get()</code> 函数即使遇见空值也能正确获得想要的结果。这就是值得我们慎重思考的地方：多种列表虽然简单快速，但是丧失了 Map 中的容错能力和快速取值能力。</p>
-<h4 id="查找特定列表">查找特定列表</h4><p>在多重列表中查找特定列表简直就是一种折磨。如果使用 Map，那么配合 <code>map-get()</code> 函数可以快速定位到特定子 Map：</p>
+<h4 id="&#x9057;&#x6F0F;&#x952E;&#x503C;">&#x9057;&#x6F0F;&#x952E;&#x503C;</h4><p>&#x5982;&#x679C;&#x8981;&#x4F7F;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x5FC5;&#x987B;&#x4FDD;&#x8BC1;&#x81EA;&#x5DF1;&#x975E;&#x5E38;&#x719F;&#x6089;&#x591A;&#x91CD;&#x5217;&#x8868;&#x5185;&#x90E8;&#x7684;&#x6BCF;&#x4E00;&#x9879;&#x6240;&#x4EE3;&#x8868;&#x7684;&#x610F;&#x4E49;&#x3002;&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x6765;&#x770B;&#x770B;&#x9057;&#x6F0F;&#x4E86;&#x67D0;&#x4E9B;&#x503C;&#x7684;&#x60C5;&#x51B5;&#xFF1A;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$breakpoint-list: (
+&#xA0; &#xA0; (small, null, 479px, 16px, 1.3),
+&#xA0; &#xA0; (medium, 480px, 959px, 18px, 1.414),
+&#xA0; &#xA0; (large, 960px, 1099px, 18px, 1.5),
+&#xA0; &#xA0; (xlarge, 1100px, 21px, 1.618)
+);
+
+p {
+&#xA0; &#xA0; @each $label, $min-width, $max-width, $base-font, $vertical-rhythm in $breakpoint-list {
+&#xA0; &#xA0; &#xA0; &#xA0; @if $min-width {
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; @include breakpoint( $min-width ) {
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; font-size: $base-font;
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; line-height: $vertical-rhythm;
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; }
+&#xA0; &#xA0; &#xA0; &#xA0; } @else {
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; font-size: $base-font;
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; line-height: $vertical-rhythm;
+&#xA0; &#xA0; &#xA0; &#xA0; }
+&#xA0; &#xA0; }
+}</span><br></pre></td></tr></table></figure>
+<p>&#x5F53;&#x6211;&#x4EEC;&#x5C1D;&#x8BD5;&#x8FD0;&#x884C;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x65F6;&#xFF0C;&#x7ED3;&#x679C;&#x80AF;&#x5B9A;&#x662F;&#x9519;&#x8BEF;&#x5730;&#xFF0C;&#x56E0;&#x4E3A;&#x5728; <code>$breakpoint-list</code> &#x7684;&#x6700;&#x540E;&#x4E00;&#x884C;&#xFF0C;<code>xlarge</code> &#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E86; <code>$label</code>&#xFF0C;<code>1100px</code> &#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E86; <code>$min-width</code>&#xFF0C;<code>21px</code> &#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E86; <code>$max-width</code>, <code>1.618</code> &#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E86; <code>$base-font</code>&#xFF0C;&#x6700;&#x7EC8;&#x5BFC;&#x81F4; <code>$vertical-rhythm</code> &#x6CA1;&#x6709;&#x88AB;&#x8D4B;&#x503C;&#xFF0C;&#x7ED3;&#x679C;&#x5C31;&#x662F; <code>font-size</code> &#x7684;&#x5C5E;&#x6027;&#x503C;&#x662F;&#x9519;&#x7684;&#xFF0C;<code>line-height</code> &#x7684;&#x5C5E;&#x6027;&#x503C;&#x662F;&#x7A7A;&#x7684;&#x3002;&#x6B64;&#x5916;&#xFF0C;Sass &#x8FD8;&#x4E0D;&#x4F1A;&#x5BF9;&#x6B64;&#x629B;&#x51FA;&#x9519;&#x8BEF;&#xFF0C;&#x5BFC;&#x81F4;&#x6211;&#x4EEC;&#x65E0;&#x4ECE;&#x77E5;&#x6653;&#x9519;&#x8BEF;&#x6240;&#x5728;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x4F7F;&#x7528; Map &#x6765;&#x4EE3;&#x66FF;&#x8FD9;&#x91CC;&#x7684;&#x591A;&#x91CD;&#x5217;&#x8868;&#xFF0C;&#x90A3;&#x4E48;&#x4F7F;&#x7528; <code>map-get()</code> &#x51FD;&#x6570;&#x5373;&#x4F7F;&#x9047;&#x89C1;&#x7A7A;&#x503C;&#x4E5F;&#x80FD;&#x6B63;&#x786E;&#x83B7;&#x5F97;&#x60F3;&#x8981;&#x7684;&#x7ED3;&#x679C;&#x3002;&#x8FD9;&#x5C31;&#x662F;&#x503C;&#x5F97;&#x6211;&#x4EEC;&#x614E;&#x91CD;&#x601D;&#x8003;&#x7684;&#x5730;&#x65B9;&#xFF1A;&#x591A;&#x79CD;&#x5217;&#x8868;&#x867D;&#x7136;&#x7B80;&#x5355;&#x5FEB;&#x901F;&#xFF0C;&#x4F46;&#x662F;&#x4E27;&#x5931;&#x4E86; Map &#x4E2D;&#x7684;&#x5BB9;&#x9519;&#x80FD;&#x529B;&#x548C;&#x5FEB;&#x901F;&#x53D6;&#x503C;&#x80FD;&#x529B;&#x3002;</p>
+<h4 id="&#x67E5;&#x627E;&#x7279;&#x5B9A;&#x5217;&#x8868;">&#x67E5;&#x627E;&#x7279;&#x5B9A;&#x5217;&#x8868;</h4><p>&#x5728;&#x591A;&#x91CD;&#x5217;&#x8868;&#x4E2D;&#x67E5;&#x627E;&#x7279;&#x5B9A;&#x5217;&#x8868;&#x7B80;&#x76F4;&#x5C31;&#x662F;&#x4E00;&#x79CD;&#x6298;&#x78E8;&#x3002;&#x5982;&#x679C;&#x4F7F;&#x7528; Map&#xFF0C;&#x90A3;&#x4E48;&#x914D;&#x5408; <code>map-get()</code> &#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x5FEB;&#x901F;&#x5B9A;&#x4F4D;&#x5230;&#x7279;&#x5B9A;&#x5B50; Map&#xFF1A;</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$medium-map: map-get($maps, medium);</span><br></pre></td></tr></table></figure>
-<p>但如果要获取多种列表 <code>medium</code> 列表，麻烦可就大了：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@function get-list($label) &#123;&#10;&#160; &#160; @each $list in $breakpoint-list &#123;&#10;&#160; &#160; &#160; &#160; @if nth($list, 1) == $label &#123;&#10;&#160; &#160; &#160; &#160; &#160; &#160; @return $list;&#10;&#160; &#160; &#160; &#160; &#125;&#10;&#160; &#160; &#125;&#10;&#160; &#160; @return null;&#10;&#125;&#10;$medium-list: get-list(medium);</span><br></pre></td></tr></table></figure>
-<p>这段代码的逻辑就是遍历整个多重列表，知道找到第一个匹配项，然后返回，如果一直没有找到匹配项，就一直遍历到末尾，然后返回 <code>null</code>。这实际上就是手工实现了 <code>map-get()</code> 的逻辑。</p>
-<h4 id="缺少原生的_Map_函数">缺少原生的 Map 函数</h4><p>Sass 提供了诸多的原生函数用于处理 Map 数据类型，但是多重列表是没法调用这些函数的，比如，使用 <code>map-merge()</code> 可以合并两个 Map，如果两个 Map 有相同的值，则取第二个 Map 的值为最终值。当然你也可以在多重列表中使用 <code>join()</code> 或 <code>append()</code> 来增加新列表，从而模拟出 <code>map-merge()</code> 的效果。</p>
-<p>另一个实用的 Map 函数就是 <code>map-has-key()</code>，对于依赖 <code>map-get()</code> 的自定义函数来说，<code>map-has-key()</code> 可以用来验证特定的 Key 是否存在。但在列表中是完全没有相似的方法。</p>
-<h2 id="总结">总结</h2><div class="note unreleased"><br>    <h5>Test Title</h5><br>    <p>相比起列表来说，Key-Value 模型的 Map 显然更有力量，原生的 Sass Map 函数更是提供了强力的数据查找和验证工具。</p><br></div>
+<p>&#x4F46;&#x5982;&#x679C;&#x8981;&#x83B7;&#x53D6;&#x591A;&#x79CD;&#x5217;&#x8868; <code>medium</code> &#x5217;&#x8868;&#xFF0C;&#x9EBB;&#x70E6;&#x53EF;&#x5C31;&#x5927;&#x4E86;&#xFF1A;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@function get-list($label) {
+&#xA0; &#xA0; @each $list in $breakpoint-list {
+&#xA0; &#xA0; &#xA0; &#xA0; @if nth($list, 1) == $label {
+&#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; @return $list;
+&#xA0; &#xA0; &#xA0; &#xA0; }
+&#xA0; &#xA0; }
+&#xA0; &#xA0; @return null;
+}
+$medium-list: get-list(medium);</span><br></pre></td></tr></table></figure>
+<p>&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x7684;&#x903B;&#x8F91;&#x5C31;&#x662F;&#x904D;&#x5386;&#x6574;&#x4E2A;&#x591A;&#x91CD;&#x5217;&#x8868;&#xFF0C;&#x77E5;&#x9053;&#x627E;&#x5230;&#x7B2C;&#x4E00;&#x4E2A;&#x5339;&#x914D;&#x9879;&#xFF0C;&#x7136;&#x540E;&#x8FD4;&#x56DE;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x76F4;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x5339;&#x914D;&#x9879;&#xFF0C;&#x5C31;&#x4E00;&#x76F4;&#x904D;&#x5386;&#x5230;&#x672B;&#x5C3E;&#xFF0C;&#x7136;&#x540E;&#x8FD4;&#x56DE; <code>null</code>&#x3002;&#x8FD9;&#x5B9E;&#x9645;&#x4E0A;&#x5C31;&#x662F;&#x624B;&#x5DE5;&#x5B9E;&#x73B0;&#x4E86; <code>map-get()</code> &#x7684;&#x903B;&#x8F91;&#x3002;</p>
+<h4 id="&#x7F3A;&#x5C11;&#x539F;&#x751F;&#x7684;-map-&#x51FD;&#x6570;">&#x7F3A;&#x5C11;&#x539F;&#x751F;&#x7684; Map &#x51FD;&#x6570;</h4><p>Sass &#x63D0;&#x4F9B;&#x4E86;&#x8BF8;&#x591A;&#x7684;&#x539F;&#x751F;&#x51FD;&#x6570;&#x7528;&#x4E8E;&#x5904;&#x7406; Map &#x6570;&#x636E;&#x7C7B;&#x578B;&#xFF0C;&#x4F46;&#x662F;&#x591A;&#x91CD;&#x5217;&#x8868;&#x662F;&#x6CA1;&#x6CD5;&#x8C03;&#x7528;&#x8FD9;&#x4E9B;&#x51FD;&#x6570;&#x7684;&#xFF0C;&#x6BD4;&#x5982;&#xFF0C;&#x4F7F;&#x7528; <code>map-merge()</code> &#x53EF;&#x4EE5;&#x5408;&#x5E76;&#x4E24;&#x4E2A; Map&#xFF0C;&#x5982;&#x679C;&#x4E24;&#x4E2A; Map &#x6709;&#x76F8;&#x540C;&#x7684;&#x503C;&#xFF0C;&#x5219;&#x53D6;&#x7B2C;&#x4E8C;&#x4E2A; Map &#x7684;&#x503C;&#x4E3A;&#x6700;&#x7EC8;&#x503C;&#x3002;&#x5F53;&#x7136;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x591A;&#x91CD;&#x5217;&#x8868;&#x4E2D;&#x4F7F;&#x7528; <code>join()</code> &#x6216; <code>append()</code> &#x6765;&#x589E;&#x52A0;&#x65B0;&#x5217;&#x8868;&#xFF0C;&#x4ECE;&#x800C;&#x6A21;&#x62DF;&#x51FA; <code>map-merge()</code> &#x7684;&#x6548;&#x679C;&#x3002;</p>
+<p>&#x53E6;&#x4E00;&#x4E2A;&#x5B9E;&#x7528;&#x7684; Map &#x51FD;&#x6570;&#x5C31;&#x662F; <code>map-has-key()</code>&#xFF0C;&#x5BF9;&#x4E8E;&#x4F9D;&#x8D56; <code>map-get()</code> &#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x6765;&#x8BF4;&#xFF0C;<code>map-has-key()</code> &#x53EF;&#x4EE5;&#x7528;&#x6765;&#x9A8C;&#x8BC1;&#x7279;&#x5B9A;&#x7684; Key &#x662F;&#x5426;&#x5B58;&#x5728;&#x3002;&#x4F46;&#x5728;&#x5217;&#x8868;&#x4E2D;&#x662F;&#x5B8C;&#x5168;&#x6CA1;&#x6709;&#x76F8;&#x4F3C;&#x7684;&#x65B9;&#x6CD5;&#x3002;</p>
+<h2 id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</h2><div class="note unreleased"><br>    <h5 id="test-title">Test Title</h5><br>    <p>&#x76F8;&#x6BD4;&#x8D77;&#x5217;&#x8868;&#x6765;&#x8BF4;&#xFF0C;Key-Value &#x6A21;&#x578B;&#x7684; Map &#x663E;&#x7136;&#x66F4;&#x6709;&#x529B;&#x91CF;&#xFF0C;&#x539F;&#x751F;&#x7684; Sass Map &#x51FD;&#x6570;&#x66F4;&#x662F;&#x63D0;&#x4F9B;&#x4E86;&#x5F3A;&#x529B;&#x7684;&#x6570;&#x636E;&#x67E5;&#x627E;&#x548C;&#x9A8C;&#x8BC1;&#x5DE5;&#x5177;&#x3002;</p><br></div>
 
-<p>虽然多重列表代码量少，但并不能像 Map 一样进行错误检查或验证参数。在大多数时候，相比较多重列表而言，我相信 Map 是更好的选择。如果是为了更少的代码量和其他简单地调用，那么我偶尔会用用多重列表，但是从项目的宏观控制和数据存储方面显然更优秀。</p>
+<p>&#x867D;&#x7136;&#x591A;&#x91CD;&#x5217;&#x8868;&#x4EE3;&#x7801;&#x91CF;&#x5C11;&#xFF0C;&#x4F46;&#x5E76;&#x4E0D;&#x80FD;&#x50CF; Map &#x4E00;&#x6837;&#x8FDB;&#x884C;&#x9519;&#x8BEF;&#x68C0;&#x67E5;&#x6216;&#x9A8C;&#x8BC1;&#x53C2;&#x6570;&#x3002;&#x5728;&#x5927;&#x591A;&#x6570;&#x65F6;&#x5019;&#xFF0C;&#x76F8;&#x6BD4;&#x8F83;&#x591A;&#x91CD;&#x5217;&#x8868;&#x800C;&#x8A00;&#xFF0C;&#x6211;&#x76F8;&#x4FE1; Map &#x662F;&#x66F4;&#x597D;&#x7684;&#x9009;&#x62E9;&#x3002;&#x5982;&#x679C;&#x662F;&#x4E3A;&#x4E86;&#x66F4;&#x5C11;&#x7684;&#x4EE3;&#x7801;&#x91CF;&#x548C;&#x5176;&#x4ED6;&#x7B80;&#x5355;&#x5730;&#x8C03;&#x7528;&#xFF0C;&#x90A3;&#x4E48;&#x6211;&#x5076;&#x5C14;&#x4F1A;&#x7528;&#x7528;&#x591A;&#x91CD;&#x5217;&#x8868;&#xFF0C;&#x4F46;&#x662F;&#x4ECE;&#x9879;&#x76EE;&#x7684;&#x5B8F;&#x89C2;&#x63A7;&#x5236;&#x548C;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x65B9;&#x9762;&#x663E;&#x7136;&#x66F4;&#x4F18;&#x79C0;&#x3002;</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>sdk<br>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
+    <![CDATA[<!-- toc -->
+<ul>
+<li><a href="#测试表格">测试表格</a></li>
+<li><a href="#语法比较">语法比较</a><ul>
+<li><a href="#map-语法">Map 语法</a></li>
+<li><a href="#多重列表语法">多重列表语法</a></li>
+</ul>
+</li>
+<li><a href="#遍历比较">遍历比较</a><ul>
+<li><a href="#遍历-map">遍历 Map</a></li>
+<li><a href="#遍历多重列表">遍历多重列表</a></li>
+</ul>
+</li>
+<li><a href="#慎用多重列表">慎用多重列表</a><ul>
+<li><a href="#遗漏键值">遗漏键值</a></li>
+<li><a href="#查找特定列表">查找特定列表</a></li>
+<li><a href="#缺少原生的-map-函数">缺少原生的 Map 函数</a></li>
+</ul>
+</li>
+<li><a href="#总结">总结</a></li>
+</ul>
+<!-- tocstop -->
+<p>sdk<br>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
 <p>自从可以使用 Map 之后，开发者们开始毫无顾忌地定义 Map 存储数据，比如断点宽度、颜色值、栅格布局等等响应式排版的细节，都被一股脑的塞进了 Map 中。</p>
 <p>那么，有了 Map 之后，我们还有必要使用 List 吗？可能某些人会觉得为了保持向后兼容应该继续使用多重列表模拟 Map，因为可能有些开发者仍然在使用老版本的 Sass 编译器，但实际上，这是多此一举了，Sass 的版本通常由 <code>package.json</code> 或者其他同类型的项目配置文件所控制，往往只需一条命令（<code>gem update sass</code>）即可更新 Sass 的版本，因此基本上无需考虑对老版本的兼容问题。</p>]]>
     

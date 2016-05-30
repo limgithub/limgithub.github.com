@@ -93,6 +93,11 @@
 
   </header>
 
+  <div class="toc hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#测试表格"><span class="section table-of-contents-text">测试表格</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#语法比较"><span class="section table-of-contents-text">语法比较</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-5"><a class="section table-of-contents-link" href="#测试标题"><span class="section table-of-contents-text">测试标题</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#map-语法"><span class="section table-of-contents-text">Map 语法</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#多重列表语法"><span class="section table-of-contents-text">多重列表语法</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#遍历比较"><span class="section table-of-contents-text">遍历比较</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-5"><a class="section table-of-contents-link" href="#测试标题"><span class="section table-of-contents-text">测试标题</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#遍历-map"><span class="section table-of-contents-text">遍历 Map</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#遍历多重列表"><span class="section table-of-contents-text">遍历多重列表</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#慎用多重列表"><span class="section table-of-contents-text">慎用多重列表</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-5"><a class="section table-of-contents-link" href="#测试标题"><span class="section table-of-contents-text">测试标题</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#遗漏键值"><span class="section table-of-contents-text">遗漏键值</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#查找特定列表"><span class="section table-of-contents-text">查找特定列表</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#缺少原生的-map-函数"><span class="section table-of-contents-text">缺少原生的 Map 函数</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#总结"><span class="section table-of-contents-text">总结</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-5"><a class="section table-of-contents-link" href="#test-title"><span class="section table-of-contents-text">Test Title</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+
+
   <div class="article-meta">
     <div class="article-datetime">
   <a href="/2015/10/21/demo/" class="article-date"><time datetime="2015-10-21T17:34:12.000Z" itemprop="datePublished">2015-10-21</time></a>
@@ -106,7 +111,29 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p>sdk<br>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
+        <!-- toc -->
+<ul>
+<li><a href="#测试表格">测试表格</a></li>
+<li><a href="#语法比较">语法比较</a><ul>
+<li><a href="#map-语法">Map 语法</a></li>
+<li><a href="#多重列表语法">多重列表语法</a></li>
+</ul>
+</li>
+<li><a href="#遍历比较">遍历比较</a><ul>
+<li><a href="#遍历-map">遍历 Map</a></li>
+<li><a href="#遍历多重列表">遍历多重列表</a></li>
+</ul>
+</li>
+<li><a href="#慎用多重列表">慎用多重列表</a><ul>
+<li><a href="#遗漏键值">遗漏键值</a></li>
+<li><a href="#查找特定列表">查找特定列表</a></li>
+<li><a href="#缺少原生的-map-函数">缺少原生的 Map 函数</a></li>
+</ul>
+</li>
+<li><a href="#总结">总结</a></li>
+</ul>
+<!-- tocstop -->
+<p>sdk<br>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
 <p>自从可以使用 Map 之后，开发者们开始毫无顾忌地定义 Map 存储数据，比如断点宽度、颜色值、栅格布局等等响应式排版的细节，都被一股脑的塞进了 Map 中。</p>
 <p>那么，有了 Map 之后，我们还有必要使用 List 吗？可能某些人会觉得为了保持向后兼容应该继续使用多重列表模拟 Map，因为可能有些开发者仍然在使用老版本的 Sass 编译器，但实际上，这是多此一举了，Sass 的版本通常由 <code>package.json</code> 或者其他同类型的项目配置文件所控制，往往只需一条命令（<code>gem update sass</code>）即可更新 Sass 的版本，因此基本上无需考虑对老版本的兼容问题。</p>
         
@@ -120,7 +147,7 @@
     
 
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/10/21/demo/" data-id="ciotaduz80000ky8lbfd0pfbi" class="article-share-link">
+      <a data-url="http://yoursite.com/2015/10/21/demo/" data-id="ciotb4plx0000od8lwz5wruc8" class="article-share-link">
         <i class="fa fa-share"></i> Share
       </a>
       
